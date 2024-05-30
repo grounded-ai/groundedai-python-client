@@ -25,15 +25,24 @@ Here's an example of how to use the GroundedAI Python Client:
 client = GroundedAIClient("your_api_key_here")
 
 # Example answer evaluation usage:
-prompt = "What is the capital of France?"
-answer = "The capital of France is Paris."
-context = {
-    "subject": "Geography",
-    "difficulty": "Easy",
+answers = {
+    "predicted": [
+        "The Great Wall of China is the world's largest human-made structure, stretching over 13,000 miles.",
+        "The Statue of Liberty, a gift from France to the United States, stands tall in New York Harbor as a symbol of freedom and democracy.",
+        "The Colosseum in Rome, Italy, is an iconic amphitheater where gladiatorial games and public spectacles took place during the Roman Empire."
+    ],
+    "groundtruth": [
+        "The Great Wall of China is the world's largest human-made structure, stretching over 13,000 miles.",
+        "The Statue of Liberty Enlightening the World, a gift from France to the United States, stands in New York Harbor as a symbol of freedom and friendship.",
+        "The Roman Colosseum, an iconic amphitheater in the heart of Rome, Italy, hosted gladiatorial games and public spectacles during the Roman Empire."
+    ]
 }
+metrics = [
+    "exact_match",
+    "semantic_similarity"
+]
 
-evaluation_results = client.evaluate_answer(prompt, answer, context)
-print(evaluation_results)
+evaluation_results = client.evaluate_answer(answers, metrics)
 
 # Example statistical evaluator usage:
 ground_truth = [
