@@ -24,42 +24,48 @@ Here's an example of how to use the GroundedAI Python Client:
 # Example usage
 client = GroundedAIClient("your_api_key_here")
 
-# Example answer evaluation usage:
-answers = {
-    "predicted": [
-        "The Great Wall of China is the world's largest human-made structure, stretching over 13,000 miles.",
-        "The Statue of Liberty, a gift from France to the United States, stands tall in New York Harbor as a symbol of freedom and democracy.",
-        "The Colosseum in Rome, Italy, is an iconic amphitheater where gladiatorial games and public spectacles took place during the Roman Empire."
-    ],
-    "groundtruth": [
-        "The Great Wall of China is the world's largest human-made structure, stretching over 13,000 miles.",
-        "The Statue of Liberty Enlightening the World, a gift from France to the United States, stands in New York Harbor as a symbol of freedom and friendship.",
-        "The Roman Colosseum, an iconic amphitheater in the heart of Rome, Italy, hosted gladiatorial games and public spectacles during the Roman Empire."
-    ]
-}
-metrics = [
-    "exact_match",
-    "semantic_similarity"
-]
-
-evaluation_results = client.evaluate_answer(answers, metrics)
-
 # Example statistical evaluator usage:
-ground_truth = [
-    ["Country A", "Country B", "Country C"],
-    ["Era X", "Era Y", "Era Z"]
-]
+ground_truth = [["Country A", "Country B", "Country C"], ["Era X", "Era Y", "Era Z"]]
 retrieved_docs = [
     ["Country A", "Country D", "Country F"],
-    ["Era X", "Era Y", "Era Alpha", "Era Beta"]
+    ["Era X", "Era Y", "Era Alpha", "Era Beta"],
 ]
-metrics = [
-    "mrr",
-    "map",
-    "recall"
-]
+metrics = ["mrr", "map", "recall"]
 
 evaluation_results = client.evaluate_statistical(ground_truth, retrieved_docs, metrics)
+print(evaluation_results)
+
+# Example answer evaluator usage:
+predicted_answers = [
+    "The Great Wall of China is the world's largest human-made structure, stretching over 13,000 miles.",
+    "The Statue of Liberty, a gift from France to the United States, stands tall in New York Harbor as a symbol of freedom and democracy.",
+    "The Colosseum in Rome, Italy, is an iconic amphitheater where gladiatorial games and public spectacles took place during the Roman Empire.",
+]
+ground_truth_answers = [
+    "The Great Wall of China is the world's largest human-made structure, stretching over 13,000 miles.",
+    "The Statue of Liberty Enlightening the World, a gift from France to the United States, stands in New York Harbor as a symbol of freedom and friendship.",
+    "The Roman Colosseum, an iconic amphitheater in the heart of Rome, Italy, hosted gladiatorial games and public spectacles during the Roman Empire.",
+]
+metrics = ["exact_match", "semantic_similarity"]
+
+evaluation_results = client.evaluate_answer(
+    predicted_answers, ground_truth_answers, metrics
+)
+print(evaluation_results)
+
+# Example retrieval evaluator usage:
+questions = ["What is the largest mammal?"]
+contexts = [
+    [
+        "The blue whale is the largest mammal on Earth, reaching up to 30 meters in length and weighing up to 180 tons.",
+        "The African elephant is the largest land mammal, known for its impressive size and intelligence.",
+        "The largest mammal ever to exist was the extinct woolly mammoth, which stood up to 4 meters tall and weighed up to 6 tons.",
+    ]
+]
+responses = ["The blue whale is the largest mammal, reaching lengths of up to 30 meters."]
+metrics = ["context_relevance", "faithfulness"]
+
+evaluation_results = client.model_evaluate_retrieval(questions, contexts, responses, metrics)
 print(evaluation_results)
 ```
 ## Contributing
